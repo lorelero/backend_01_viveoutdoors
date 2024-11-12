@@ -1,0 +1,114 @@
+/* styles.css */
+body {
+  max-width: 1024px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  padding: 0;
+}
+
+header {
+  background: #333;
+  color: white;
+  padding: 10px;
+}
+
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #333;
+  color: white;
+}
+
+.brand-banner {
+  background-color: #f8f9fa; /* Color de fondo claro */
+  padding: 20px 0;
+}
+
+
+.vertical-line {
+  width: 1px; /* Ancho de la línea */
+  background-color: #000; /* Color de la línea */
+  height: 100%; /* Ajusta la altura para que ocupe todo el espacio disponible */
+  margin: 0 20px; /* Espacio alrededor de la línea */
+}
+
+.placeholder-centered::placeholder {
+  text-align: center; /* Centra el texto del placeholder */
+}
+
+.card-custom {
+  background-color: #f8f9fa; /* Fondo gris claro */
+  border-radius: 15px; /* Bordes redondeados */
+  padding: 20px; /* Espaciado interno */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+}
+
+.border-lila {
+  border: 2px solid #a77bca; /* Color lila */
+  border-radius: 5px; /* Bordes redondeados opcional */
+}
+
+.border-lila:focus {
+  border-color: #9b59b6; /* Cambia el color del borde al hacer foco */
+  box-shadow: 0 0 5px rgba(155, 89, 182, 0.5); /* Sombra opcional al foco */
+}
+
+.button-custom {
+  width: auto; /* Ajusta el ancho del botón */
+  padding: 10px 20px; /* Espaciado interno */
+  margin: 0 auto; /* Centra el botón */
+  display: block; /* Asegura que el botón se comporte como un bloque */
+}
+
+.product-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.product-name {
+  margin: 1rem 0;
+  font-size: 1.2rem;
+}
+
+.product-description {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.product-price {
+  font-weight: bold;
+  color: #2c5282;
+  font-size: 1.1rem;
+}
