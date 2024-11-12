@@ -1,0 +1,104 @@
+CREATE DATABASE viveoutdoors;
+
+\c viveoutdoors;
+
+-- Creación de tablas
+
+CREATE TABLE usuarios (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefono VARCHAR(15) UNIQUE NOT NULL,
+    contraseña VARCHAR(15) NOT NULL,
+    rol ENUM('Admin', 'Cliente') DEFAULT 'Cliente'
+);
+
+CREATE TABLE direcciones (
+    id_direccion INT PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    region VARCHAR(100) NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
+CREATE TABLE categorias (
+    id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    sale ENUM('Activo', 'Inactivo') DEFAULT 'Inactivo'
+);
+
+CREATE TABLE productos (
+    id_producto INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    descripción TEXT,
+    stock INT NOT NULL,
+    precio INT NOT NULL,
+);
+
+CREATE TABLE productos_categorias (
+    id_producto INT NOT NULL,
+    id_categoria INT NOT NULL,
+    -- valor_sale DECIMAL(10, 2),
+    PRIMARY KEY (id_producto, id_categoria),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
+);
+
+CREATE TABLE imagenes_productos (
+    id_imagen INT PRIMARY KEY AUTO_INCREMENT,
+    id_producto INT NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    texto_alternativo VARCHAR(255) NOT NULL,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+CREATE TABLE pedidos (
+    id_pedido INT PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT NOT NULL,
+    fecha_pedido DATETIME NOT NULL,
+    estado ENUM('pendiente', 'enviado', 'completado', 'cancelado') DEFAULT 'pendiente',
+    total INT NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
+CREATE TABLE detallesPedido (
+    id_detalle INT PRIMARY KEY AUTO_INCREMENT,
+    id_pedido INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio INT NOT NULL,
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+CREATE TABLE carrito (
+    id_carrito INT PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT NOT NULL,
+    fecha_creacion DATETIME NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
+CREATE TABLE detallesCarrito (
+    id_detalle_carrito INT PRIMARY KEY AUTO_INCREMENT,
+    id_carrito INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio INT NOT NULL,
+    FOREIGN KEY (id_carrito) REFERENCES carrito(id_carrito),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+
+--insertar registros a las tablas
+
+INSERT INTO inventario values (DEFAULT, 'Collar Heart', 'collar', 'oro', 20000 , 2), (DEFAULT, 'Collar History', 'collar', 'plata', 15000 , 5), (DEFAULT, 'Aros Berry', 'aros', 'oro', 12000 , 10), (DEFAULT, 'Aros Hook Blue', 'aros', 'oro', 25000 , 4), (DEFAULT, 'Anillo Wish', 'aros', 'plata', 30000 , 4), (DEFAULT, 'Anillo Cuarzo Greece', 'anillo', 'oro', 40000 , 2);
+
+CREATE TABLE usuarios ( DEFAULT, '',
+    apellido VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefono VARCHAR(15) UNIQUE NOT NULL,
+    contraseña VARCHAR(15) NOT NULL,
+    rol ENUM('Admin', 'Cliente') DEFAULT 'Cliente'
+);
