@@ -1,18 +1,28 @@
-const { Pool } = require('pg');
+//configura y exporta un pool de conexiones a una base de datos PostgreSQL, 
+//utilizando variables de entorno para la configuración y biblioteca pg
 
-const pool = new Pool({
-    user: 'tu_usuario',
-    host: 'localhost',
-    database: 'tu_base_de_datos',
-    password: 'tu_contraseña',
-    port: 5432,
+const { Pool } = require('pg'); //importa la clase Pool de la biblioteca pg
+
+const { HOST, DATABASE, USER, PASSWORD, PORT } = process.env;  //extrae las variables de entorno necesarias para la conexión a la base de datos del archivo .env
+
+const pool = new Pool({   //configuración de la conexión, se crea una instancia de Pool con la configuración necesaria para conectarse a la base de datos PostgreSQL.
+    host: HOST,
+    database: DATABASE,
+    user: USER,
+    password: PASSWORD,
+    port: PORT,
+    allowExitOnIdle: true,  // permite que la aplicación se cierre incluso si hay conexiones inactivas en el pool.
 });
 
 // Ejemplo de consulta
-pool.query('SELECT * FROM nombre de tabla', (err, res) => {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log(res.rows);
-    }
-});
+// pool.query('SELECT * FROM nombre de tabla', (err, res) => {
+//     if (err) {
+//         console.error(err);
+//     } else {
+//         console.log(res.rows);
+//     }
+// });
+
+
+
+module.exports = { pool };
