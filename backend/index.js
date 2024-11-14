@@ -1,7 +1,26 @@
-// ¡Hola! Importamos las dependencias necesarias para nuestra aplicación
+// npm init --yes
+// npm i express
+// npm i express-fileupload
+// npm i pg
+// npm i jsonwebtoken
+// npm i nodemon -D
+// npm i morgan
+// npm i dotenv
+// crear .env
+// crear .gitignore
+// abrir psql y crear database y table
+
+// Importaciones
+//const expressFileUpload = require("express-fileupload");
+//const secretKey = "blog";
+//const dotenv = require("dotenv");
+//dotenv.config();
+
+// Importamos las dependencias necesarias para nuestra aplicación
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 
 // Creamos una instancia de Express
