@@ -90,15 +90,36 @@ CREATE TABLE detallesCarrito (
     FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
+CREATE TABLE publicaciones (
+    id_publicacion INT PRIMARY KEY AUTO_INCREMENT,
+    id_producto INT NOT NULL,
+    id_usuario INT NOT NULL,
+    estado ENUM('Activo', 'Inactivo') NOT NULL,
+    fecha_creacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+
+);
+
 
 --insertar registros a las tablas
 
-INSERT INTO inventario values (DEFAULT, 'Collar Heart', 'collar', 'oro', 20000 , 2), (DEFAULT, 'Collar History', 'collar', 'plata', 15000 , 5), (DEFAULT, 'Aros Berry', 'aros', 'oro', 12000 , 10), (DEFAULT, 'Aros Hook Blue', 'aros', 'oro', 25000 , 4), (DEFAULT, 'Anillo Wish', 'aros', 'plata', 30000 , 4), (DEFAULT, 'Anillo Cuarzo Greece', 'anillo', 'oro', 40000 , 2);
 
-CREATE TABLE usuarios ( DEFAULT, '',
-    apellido VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    telefono VARCHAR(15) UNIQUE NOT NULL,
-    contraseña VARCHAR(15) NOT NULL,
-    rol ENUM('Admin', 'Cliente') DEFAULT 'Cliente'
-);
+--usuarios 2 admin y 1 cliente
+
+INSERT INTO usuarios (id_usuario, nombre, apellido, email, telefono, password, rol) VALUES (DEFAULT, 'juan', 'perez', 'admin1@example.com', '1234567890', '12345', 'Admin');
+INSERT INTO usuarios (id_usuario, nombre, apellido, email, telefono, password, rol) VALUES (DEFAULT, 'ana', 'gomez', 'admin2@example.com', '0987654321', '12345', 'Admin'),
+INSERT INTO usuarios (id_usuario, nombre, apellido, email, telefono, password, rol) VALUES (DEFAULT, 'maria', 'lopez', 'cliente1@example.com', '1122334455', '1111', 'Cliente');
+
+--tabla direcciones 2 registros para el cliente y 1 para cada admin
+
+-- direcciones del admin 1
+INSERT INTO direcciones (id_direccion, id_usuario, direccion, ciudad, region) VALUES (DEFAULT, 1, 'Calle Admin1', 'Santiago', 'Metropolitana');
+
+-- direcciones del admin 2
+INSERT INTO direcciones (id_direccion, id_usuario, direccion, ciudad, region) VALUES (DEFAULT, 2, 'Calle Admin2', 'Santiago', 'Metropolitana');
+
+-- direcciones del cliente:
+INSERT INTO direcciones (id_direccion, id_usuario, direccion, ciudad, region) VALUES (DEFAULT, 3, 'Calle 123', 'Santiago', 'Metropolitana'), (DEFAULT, 3, 'Avenida 456', 'Casablanca', 'Valparaíso');
+
