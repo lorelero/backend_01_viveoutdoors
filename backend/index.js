@@ -42,8 +42,36 @@ app.get('/', (req, res) => {
 
 app.get("/publicaciones", async (req, res) => {
     const obtenerPublicaciones = await leerPublicaciones();
-    res.json({ mensaje: '¡Bienvenido a la API! Esperamos que disfrutes tu experiencia.' , obtenerPublicaciones});
+    res.json({obtenerPublicaciones});
 });
+
+
+// Ruta para crear un nuevo producto, imagen y publicación
+app.post('/crearpublicacion', async (req, res) => {
+    const { nombre, descripcion, stock, precio, url_imagen, fecha_creacion, fecha_actualizacion, estado } = req.body;
+  
+    try {
+      // Insertar el producto
+      const nuevoProducto = await insertarProducto(nombre, descripcion, stock, precio);
+  
+      // Insertar la imagen del producto con el ID del nuevo producto
+      const nuevaImagen = await insertarImagenProducto(nuevoProducto.id_producto, url_imagen);
+  
+      // Insertar la publicación con el ID del nuevo producto
+      const nuevaPublicacion = await insertarPublicacion(nuevoProducto.id_producto, fecha_creacion, fecha_actualizacion, estado);
+  
+      res.status(201).json({
+        mensaje: 'Publicación creada exitosamente',
+        producto: nuevoProducto,
+        imagen: nuevaImagen,
+        publicacion: nuevaPublicacion
+      });
+    } catch (error) {
+      console.error('Error al crear la publicación:', error);
+      res.status(500).json({ error: 'Error al crear la publicación' });
+    }
+  });
+  
 
 
 
