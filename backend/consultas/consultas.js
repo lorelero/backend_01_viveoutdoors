@@ -30,26 +30,11 @@ const leerPublicaciones = async () => {
 // ------------------------------------
 // Función para insertar un nuevo producto
 const insertarProducto = async (nombre, descripcion, stock, precio) => {
-  const consultaProducto = `
-    INSERT INTO productos (id_producto, nombre, descripcion, stock, precio)
-    VALUES (DEFAULT, $1, $2, $3, $4)
-    RETURNING *;
-  `;
+  const consulta = `INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, $1, $2, $3, $4) RETURNING *;`;
   const values = [nombre, descripcion, stock, precio];
-  const result = await pool.query(consultaProducto, values);
+  const result = await pool.query(consulta, values);
   return result.rows[0]; // Retorna el producto insertado
 };
-
-id_producto SERIAL PRIMARY KEY, 
-nombre VARCHAR(100) NOT NULL, 
-descripción TEXT, 
-stock INT NOT NULL, 
-precio INT NOT NULL
-
-
-module.exports = { leerPublicaciones, insertarProducto };
-
-
 
 // Función para insertar una nueva publicación
 const insertarPublicacion = async (idProducto, fecha_creacion, fecha_actualizacion, estado) => {
@@ -75,11 +60,9 @@ const insertarImagenProducto = async (idProducto, url) => {
   return result.rows[0]; // Retorna la imagen insertada
 };
 
-module.exports = {
-  insertarProducto,
-  insertarPublicacion,
-  insertarImagenProducto
-};
+
+
+module.exports = { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto };
 
 
 
