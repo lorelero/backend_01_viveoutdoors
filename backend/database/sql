@@ -32,7 +32,7 @@ CREATE TABLE categorias (
 CREATE TABLE productos ( 
     id_producto SERIAL PRIMARY KEY, 
     nombre VARCHAR(100) NOT NULL, 
-    descripción TEXT, 
+    descripcion TEXT, 
     stock INT NOT NULL, 
     precio INT NOT NULL
 );
