@@ -13,7 +13,7 @@
 // Importaciones
 //const expressFileUpload = require("express-fileupload");
 //const secretKey = "blog";
-//const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 //dotenv.config();
 
 // Importamos las dependencias necesarias para nuestra aplicación
@@ -21,13 +21,14 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
+const { leerPublicaciones } = require('./consultas/consultas.js');
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 
 // Creamos una instancia de Express
 const app = express();
 
 // Configuramos el puerto en el que escuchará nuestra aplicación
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT_SERVER || 3000;
 
 // Usamos middleware para mejorar nuestra aplicación
 app.use(cors()); // Permite que nuestra API sea accesible desde diferentes orígenes
@@ -38,6 +39,15 @@ app.use(express.json()); // Permite que nuestra aplicación entienda el formato 
 app.get('/', (req, res) => {
     res.send('¡Hola, mundo! Bienvenido a nuestra aplicación.'); // Respuesta amigable en la ruta raíz
 });
+
+app.get("/publicaciones", async (req, res) => {
+    const obtenerPublicaciones = await leerPublicaciones();
+    res.json({ mensaje: '¡Bienvenido a la API! Esperamos que disfrutes tu experiencia.' , obtenerPublicaciones});
+});
+
+
+
+
 
 // Añadimos una ruta adicional para mostrar un saludo
 app.get('/api/saludo', (req, res) => {
@@ -53,3 +63,4 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}. ¡Gracias por usar nuestra aplicación!`);
 });
+

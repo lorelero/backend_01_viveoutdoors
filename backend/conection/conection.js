@@ -14,15 +14,5 @@ const pool = new Pool({   //configuración de la conexión, se crea una instanci
     allowExitOnIdle: true,  // permite que la aplicación se cierre incluso si hay conexiones inactivas en el pool.
 });
 
-// Ejemplo de consulta
-// pool.query('SELECT * FROM nombre de tabla', (err, res) => {
-//     if (err) {
-//         console.error(err);
-//     } else {
-//         console.log(res.rows);
-//     }
-// });
-
-
 
 module.exports = { pool };
