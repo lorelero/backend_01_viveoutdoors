@@ -27,8 +27,9 @@ const leerPublicaciones = async () => {
 };
 
 
-// ------------------------------------
-// Función para insertar un nuevo producto
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA INSERTAR UN NUEVO PRODUCTO 
+
 const insertarProducto = async (nombre, descripcion, stock, precio) => {
   const consulta = `INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, $1, $2, $3, $4) RETURNING *;`;
   const values = [nombre, descripcion, stock, precio];
@@ -36,9 +37,11 @@ const insertarProducto = async (nombre, descripcion, stock, precio) => {
   return result.rows[0]; // Retorna el producto insertado
 };
 
-// Función para insertar una nueva publicación
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA INSERTAR UNA NUEVA PUBLICACIÓN
+
 const insertarPublicacion = async (idProducto, fecha_creacion, fecha_actualizacion, estado) => {
-  const consultaPublicacion = `
+  const consulta = `
     INSERT INTO publicaciones (id_producto, fecha_creacion, fecha_actualizacion, estado)
     VALUES ($1, $2, $3, $4)
     RETURNING *;
@@ -48,15 +51,14 @@ const insertarPublicacion = async (idProducto, fecha_creacion, fecha_actualizaci
   return result.rows[0]; // Retorna la publicación insertada
 };
 
-// Función para insertar una imagen de producto
-const insertarImagenProducto = async (idProducto, url) => {
-  const consultaImagen = `
-    INSERT INTO imagenes_productos (id_producto, url)
-    VALUES ($1, $2)
-    RETURNING *;
-  `;
-  const values = [idProducto, url];
-  const result = await pool.query(consultaImagen, values);
+
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA INSERTAR UNA NUEVA IMAGEN DE PRODUCTO
+
+const insertarImagenProducto = async (id_producto, url, texto_alternativo) => {
+  const consulta = `INSERT INTO imagenes_productos (id_imagen, id_producto, url, texto_alternativo) VALUES (DEFAULT, $1, $2, $3) RETURNING *;`;
+  const values = [id_producto, url, texto_alternativo];
+  const result = await pool.query(consulta, values);
   return result.rows[0]; // Retorna la imagen insertada
 };
 
