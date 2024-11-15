@@ -40,14 +40,10 @@ const insertarProducto = async (nombre, descripcion, stock, precio) => {
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA INSERTAR UNA NUEVA PUBLICACIÓN
 
-const insertarPublicacion = async (idProducto, fecha_creacion, fecha_actualizacion, estado) => {
-  const consulta = `
-    INSERT INTO publicaciones (id_producto, fecha_creacion, fecha_actualizacion, estado)
-    VALUES ($1, $2, $3, $4)
-    RETURNING *;
-  `;
-  const values = [idProducto, fecha_creacion, fecha_actualizacion, estado];
-  const result = await pool.query(consultaPublicacion, values);
+const insertarPublicacion = async (id_producto, id_usuario, estado) => {
+  const consulta = `INSERT INTO publicaciones (id_publicacion, id_producto, id_usuario, estado, fecha_creacion, fecha_actualizacion) VALUES (DEFAULT, $1, $2, DEFAULT, DEFAULT) RETURNING *;`;
+  const values = [id_producto, id_usuario, estado];
+  const result = await pool.query(consulta, values);
   return result.rows[0]; // Retorna la publicación insertada
 };
 
