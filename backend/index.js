@@ -21,7 +21,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
-const { leerPublicaciones } = require('./consultas/consultas.js');
+const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 
 // Creamos una instancia de Express
@@ -48,14 +48,14 @@ app.get("/publicaciones", async (req, res) => {
 
 // Ruta para crear un nuevo producto, imagen y publicación
 app.post('/crearpublicacion', async (req, res) => {
-    const { nombre, descripcion, stock, precio, url_imagen, texto_alternativo, id_usuario, estado } = req.body;
+    const { nombre, descripcion, stock, precio, url, texto_alternativo, id_usuario, estado } = req.body;
   
     try {
       // Insertar el producto y obtener su ID
       const nuevoProducto = await insertarProducto(nombre, descripcion, stock, precio);
   
       // Insertar la imagen del producto con el ID del nuevo producto
-      const nuevaImagen = await insertarImagenProducto(nuevoProducto.id_producto, url_imagen, texto_alternativo);
+      const nuevaImagen = await insertarImagenProducto(nuevoProducto.id_producto, url, texto_alternativo);
   
       // Insertar la publicación con el ID del nuevo producto
       const nuevaPublicacion = await insertarPublicacion(nuevoProducto.id_producto, id_usuario, estado);

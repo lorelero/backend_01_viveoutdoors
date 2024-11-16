@@ -51,7 +51,7 @@ const insertarPublicacion = async (id_producto, id_usuario, estado) => {
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA INSERTAR UNA NUEVA IMAGEN DE PRODUCTO
 
-const insertarImagenProducto = async (id_imagen, id_producto, url, texto_alternativo) => {
+const insertarImagenProducto = async (id_producto, url, texto_alternativo) => {
   const consulta = `INSERT INTO imagenes_productos (id_imagen, id_producto, url, texto_alternativo) VALUES (DEFAULT, $1, $2, $3) RETURNING *;`;
   const values = [id_producto, url, texto_alternativo];
   const result = await pool.query(consulta, values);
