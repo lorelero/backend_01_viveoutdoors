@@ -1,7 +1,11 @@
 // user-repository.js
-import { pool } from './consultas.js';
-import bcrypt from 'bcryptjs';
-import crypto from 'node:crypto';
+
+// importando lo que necesitas de conection.js, conexion a la BD
+const { pool } = require("../conection/conection");
+
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+
 
 export class UserRepository {
     static async create({ username, password }) {
