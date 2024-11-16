@@ -48,17 +48,17 @@ app.get("/publicaciones", async (req, res) => {
 
 // Ruta para crear un nuevo producto, imagen y publicación
 app.post('/crearpublicacion', async (req, res) => {
-    const { nombre, descripcion, stock, precio, url_imagen, fecha_creacion, fecha_actualizacion, estado } = req.body;
+    const { nombre, descripcion, stock, precio, url_imagen, texto_alternativo, id_usuario, estado } = req.body;
   
     try {
-      // Insertar el producto
+      // Insertar el producto y obtener su ID
       const nuevoProducto = await insertarProducto(nombre, descripcion, stock, precio);
   
       // Insertar la imagen del producto con el ID del nuevo producto
-      const nuevaImagen = await insertarImagenProducto(nuevoProducto.id_producto, url_imagen);
+      const nuevaImagen = await insertarImagenProducto(nuevoProducto.id_producto, url_imagen, texto_alternativo);
   
       // Insertar la publicación con el ID del nuevo producto
-      const nuevaPublicacion = await insertarPublicacion(nuevoProducto.id_producto, fecha_creacion, fecha_actualizacion, estado);
+      const nuevaPublicacion = await insertarPublicacion(nuevoProducto.id_producto, id_usuario, estado);
   
       res.status(201).json({
         mensaje: 'Publicación creada exitosamente',
@@ -74,8 +74,10 @@ app.post('/crearpublicacion', async (req, res) => {
   
 
 
-
-
+// Manejo de errores 404 
+app.use((req, res, next) => { 
+    res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
+});
 
 // Añadimos una ruta adicional para mostrar un saludo
 app.get('/api/saludo', (req, res) => {

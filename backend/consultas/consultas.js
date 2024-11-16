@@ -34,14 +34,14 @@ const insertarProducto = async (nombre, descripcion, stock, precio) => {
   const consulta = `INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, $1, $2, $3, $4) RETURNING *;`;
   const values = [nombre, descripcion, stock, precio];
   const result = await pool.query(consulta, values);
-  return result.rows[0]; // Retorna el producto insertado
+  return result.rows[0]; // Retorna el producto insertado con id generado
 };
 
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA INSERTAR UNA NUEVA PUBLICACIÓN
 
 const insertarPublicacion = async (id_producto, id_usuario, estado) => {
-  const consulta = `INSERT INTO publicaciones (id_publicacion, id_producto, id_usuario, estado, fecha_creacion, fecha_actualizacion) VALUES (DEFAULT, $1, $2, DEFAULT, DEFAULT) RETURNING *;`;
+  const consulta = `INSERT INTO publicaciones (id_publicacion, id_producto, id_usuario, estado, fecha_creacion, fecha_actualizacion) VALUES (DEFAULT, $1, $2, $3, DEFAULT, DEFAULT) RETURNING *;`;
   const values = [id_producto, id_usuario, estado];
   const result = await pool.query(consulta, values);
   return result.rows[0]; // Retorna la publicación insertada
@@ -51,7 +51,7 @@ const insertarPublicacion = async (id_producto, id_usuario, estado) => {
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA INSERTAR UNA NUEVA IMAGEN DE PRODUCTO
 
-const insertarImagenProducto = async (id_producto, url, texto_alternativo) => {
+const insertarImagenProducto = async (id_imagen, id_producto, url, texto_alternativo) => {
   const consulta = `INSERT INTO imagenes_productos (id_imagen, id_producto, url, texto_alternativo) VALUES (DEFAULT, $1, $2, $3) RETURNING *;`;
   const values = [id_producto, url, texto_alternativo];
   const result = await pool.query(consulta, values);
