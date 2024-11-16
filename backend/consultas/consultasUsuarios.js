@@ -35,8 +35,9 @@ const registrarUsuario = async (req, res) => {
 // Función para iniciar sesión
 // Si la entrada es válida, se llama a UserRepository.login para autenticar al usuario.
 // Si la autenticación es exitosa, se genera un token JWT y se envía al cliente.
+
 const iniciarSesion = async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -44,9 +45,9 @@ const iniciarSesion = async (req, res) => {
     }
 
     try {
-        const user = await UserRepository.login({ username, password });
+        const user = await UserRepository.login({ email, password });
         const token = jwt.sign(
-            { id: user._id, username: user.username },
+            { id: user.id_usuario, email: user.email, rol: user.rol },
             SECRET_JWT_KEY,
             { expiresIn: '1h' }
         );
