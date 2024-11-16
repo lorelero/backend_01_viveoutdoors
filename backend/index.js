@@ -31,14 +31,7 @@ const PORT = process.env.PORT_SERVER || 3000;
 
 // const { PORT, SECRET_JWT_KEY } = process.env; 
 
-const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido, 
-pool } = require('./consultas/consultasUsuarios.js');
-const { 
-    leerPublicaciones, 
-    insertarProducto, 
-    insertarImagenProducto, 
-    insertarPublicacion 
-} = require('./consultas/consultas.js');
+const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = require('./consultas/consultasUsuarios.js');
 const { body, validationResult } = require('express-validator');
 
 // Creamos una instancia de Express
