@@ -16,14 +16,13 @@ export class UserRepository {
             throw new Error('El correo electrónico ya existe');
         }
 
-        // Generar un ID único para el nuevo usuario
-       //  const id = crypto.randomUUID();   --> no es necesario, el id_usuario es SERIAL
+        // Hashear la contraseña
         const hashedPassword = await bcrypt.hash(password, 10); // Puedes ajustar el número de saltos
 
         // Insertar el nuevo usuario en la base de datos
-        await pool.query('INSERT INTO usuarios (id_usuario, nombre, apellido, email, telefono, password, rol) VALUES (DEFAULT, $1, $2, $3, $4, $5, DEFAULT)', [nombre, apellido, email, telefono, hashedPassword]);
-
-        return id;
+        const resultado = await pool.query('INSERT INTO usuarios (id_usuario, nombre, apellido, email, telefono, password, rol) VALUES (DEFAULT, $1, $2, $3, $4, $5, DEFAULT) RETURNING *', [nombre, apellido, email, telefono, hashedPassword]);
+        console.log ("usuario: ", resultado); // muestra en consola el usuario registrado
+        return resultado.rows[0]; // retorna la información del usuario
     }
 
     static async login({ email, password }) {

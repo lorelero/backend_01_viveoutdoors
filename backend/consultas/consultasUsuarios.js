@@ -25,8 +25,9 @@ const registrarUsuario = async (req, res) => {
     }
 
     try {
-        const id = await UserRepository.create({ nombre, apellido, email, telefono, password, rol });  // verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
-        return res.status(201).json({ id });  // tengo la duda si debe ser id_usuario
+        const user = await UserRepository.create({ nombre, apellido, email, telefono, password, rol });  // verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
+        const { id_usuario, rol: userRol } = user; // Extrae campos necesrios
+        return res.status(201).json({ id_usuario, rol:userRol }); 
     } catch (error) {
         return res.status(400).send(error.message);
     }
@@ -46,6 +47,7 @@ const iniciarSesion = async (req, res) => {
 
     try {
         const user = await UserRepository.login({ email, password });
+        const { id_usuario, rol, nombre} = user; // extrae campos necesarios
         const token = jwt.sign(
             { id: user.id_usuario, email: user.email, rol: user.rol },
             SECRET_JWT_KEY,
@@ -74,3 +76,6 @@ const cerrarSesion = (req, res) => {
         .json({ message: 'Sesión cerrada exitosamente' });
 };
 
+
+module.exports = { registrarUsuario, iniciarSesion, cerrarSesion
+  };
