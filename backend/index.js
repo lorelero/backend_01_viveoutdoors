@@ -19,6 +19,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const helmet = require('helmet');
 const jwt = require("jsonwebtoken");
+const { body, validationResult } = require('express-validator');
 
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 
@@ -38,7 +39,6 @@ app.listen(PORT, () => {
 //importamos funciones necesarias para las rutas
 const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
 const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = require('./consultas/consultasUsuarios.js');
-const { body, validationResult } = require('express-validator');
 
 
 
