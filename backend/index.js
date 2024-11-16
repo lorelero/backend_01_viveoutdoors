@@ -22,22 +22,24 @@ const jwt = require("jsonwebtoken");
 
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 
-//importamos funciones necesarias para las rutas
-const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
 
 // Configuramos el puerto en el que escuchará nuestra aplicación
 const PORT = process.env.PORT_SERVER || 3000;
 
-
-// const { PORT, SECRET_JWT_KEY } = process.env; 
-
-const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = require('./consultas/consultasUsuarios.js');
-const { body, validationResult } = require('express-validator');
-
 // Creamos una instancia de Express
 const app = express(); 
 
+// const { PORT, SECRET_JWT_KEY } = process.env; 
+
+//importamos funciones necesarias para las rutas
+const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
+const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = require('./consultas/consultasUsuarios.js');
+const { body, validationResult } = require('express-validator');
+
+
+
 // Middleware
+app.use(cors()); // Permite que nuestra API sea accesible desde diferentes orígenes
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
