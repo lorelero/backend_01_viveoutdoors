@@ -44,20 +44,20 @@ INSERT INTO direcciones (id_direccion, id_usuario, direccion, ciudad, region) VA
 INSERT INTO categorias (id_categoria, nombre) VALUES (DEFAULT, 'Carpas'), (DEFAULT, 'Mochilas'), (DEFAULT, 'Sacos & Colchonetas'), (DEFAULT, 'Accesorios'); 
 
 
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Carpa Everest', 'Carpa de alta montaña', 10, 200000);
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Carpa Igloo', 'Carpa para 4 personas', 15, 120000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Carpa Everest', 'Carpa de alta montaña', 10, 200000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Carpa Igloo', 'Carpa para 4 personas', 15, 120000);
 
 
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Mochila Montañista', 'Mochila de 70 litros', 20, 40000);
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Mochila Trekking', 'Mochila ligera de 30 litros', 30, 30000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Mochila Montañista', 'Mochila de 70 litros', 20, 40000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Mochila Trekking', 'Mochila ligera de 30 litros', 30, 30000);
 
 
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Saco de Dormir Invierno', 'Saco térmico para bajas temperaturas', 25, 60000);
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Colchoneta Autoinflable', 'Colchoneta para camping', 20, 30000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Saco de Dormir Invierno', 'Saco térmico para bajas temperaturas', 25, 60000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Colchoneta Autoinflable', 'Colchoneta para camping', 20, 30000);
 
 
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Linterna LED', 'Linterna resistente al agua', 50, 15000);
-INSERT INTO productos (id_producto, nombre, descripción, stock, precio) VALUES (DEFAULT, 'Filtro de Agua Portátil', 'Filtro compacto para purificar agua', 40, 25000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Linterna LED', 'Linterna resistente al agua', 50, 15000);
+INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, 'Filtro de Agua Portátil', 'Filtro compacto para purificar agua', 40, 25000);
 
 
 INSERT INTO productos_categorias (id_producto, id_categoria) VALUES (1, 1), (2, 1), (3, 2), (4, 2), (5, 3), (6, 3), (7, 4), (8, 4);
