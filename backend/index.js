@@ -17,12 +17,21 @@
 //dotenv.config();
 
 // Importamos las dependencias necesarias para nuestra aplicación
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
-require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
+const {
+  leerPublicaciones,
+  insertarProducto,
+  insertarPublicacion,
+  insertarImagenProducto,
+  getProductos,
+  getProductoById,
+  getProductosSale,
+  getProductosCategorias,
+} = require("./consultas/consultas.js");
+require("dotenv").config(); // Cargamos las variables de entorno desde el archivo .env
 
 // Creamos una instancia de Express
 const app = express();
@@ -32,65 +41,134 @@ const PORT = process.env.PORT_SERVER || 3000;
 
 // Usamos middleware para mejorar nuestra aplicación
 app.use(cors()); // Permite que nuestra API sea accesible desde diferentes orígenes
-app.use(morgan('dev')); // Registra las solicitudes en la consola para facilitar el desarrollo
+app.use(morgan("dev")); // Registra las solicitudes en la consola para facilitar el desarrollo
 app.use(express.json()); // Permite que nuestra aplicación entienda el formato JSON en las solicitudes
 
 // Definimos nuestras rutas
-app.get('/', (req, res) => {
-    res.send('¡Hola, mundo! Bienvenido a nuestra aplicación.'); // Respuesta amigable en la ruta raíz
+app.get("/", (req, res) => {
+  res.send("¡Hola, mundo! Bienvenido a nuestra aplicación."); // Respuesta amigable en la ruta raíz
 });
 
 app.get("/publicaciones", async (req, res) => {
-    const obtenerPublicaciones = await leerPublicaciones();
-    res.json({obtenerPublicaciones});
+  const obtenerPublicaciones = await leerPublicaciones();
+  res.json({ obtenerPublicaciones });
 });
 
-
 // Ruta para crear un nuevo producto, imagen y publicación
-app.post('/crearpublicacion', async (req, res) => {
-    const { nombre, descripcion, stock, precio, url, texto_alternativo, id_usuario, estado } = req.body;
-  
-    try {
-      // Insertar el producto y obtener su ID
-      const nuevoProducto = await insertarProducto(nombre, descripcion, stock, precio);
-  
-      // Insertar la imagen del producto con el ID del nuevo producto
-      const nuevaImagen = await insertarImagenProducto(nuevoProducto.id_producto, url, texto_alternativo);
-  
-      // Insertar la publicación con el ID del nuevo producto
-      const nuevaPublicacion = await insertarPublicacion(nuevoProducto.id_producto, id_usuario, estado);
-  
-      res.status(201).json({
-        mensaje: 'Publicación creada exitosamente',
-        producto: nuevoProducto,
-        imagen: nuevaImagen,
-        publicacion: nuevaPublicacion
-      });
-    } catch (error) {
-      console.error('Error al crear la publicación:', error);
-      res.status(500).json({ error: 'Error al crear la publicación' });
-    }
-  });
-  
+app.post("/crearpublicacion", async (req, res) => {
+  const {
+    nombre,
+    descripcion,
+    stock,
+    precio,
+    url,
+    texto_alternativo,
+    id_usuario,
+    estado,
+  } = req.body;
 
+  try {
+    // Insertar el producto y obtener su ID
+    const nuevoProducto = await insertarProducto(
+      nombre,
+      descripcion,
+      stock,
+      precio
+    );
 
-// Manejo de errores 404 
-app.use((req, res, next) => { 
-    res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
+    // Insertar la imagen del producto con el ID del nuevo producto
+    const nuevaImagen = await insertarImagenProducto(
+      nuevoProducto.id_producto,
+      url,
+      texto_alternativo
+    );
+
+    // Insertar la publicación con el ID del nuevo producto
+    const nuevaPublicacion = await insertarPublicacion(
+      nuevoProducto.id_producto,
+      id_usuario,
+      estado
+    );
+
+    res.status(201).json({
+      mensaje: "Publicación creada exitosamente",
+      producto: nuevoProducto,
+      imagen: nuevaImagen,
+      publicacion: nuevaPublicacion,
+    });
+  } catch (error) {
+    console.error("Error al crear la publicación:", error);
+    res.status(500).json({ error: "Error al crear la publicación" });
+  }
+});
+
+// Obtención de productos
+app.get("/productos", async (req, res) => {
+  try {
+    const productos = await getProductos();
+    res.json(productos);
+  } catch (error) {
+    res.status(error.code || 500).send(error);
+  }
+});
+
+// Obtención de productos por ID
+app.get("/productos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const producto = await getProductoById(id);
+    res.json(producto);
+  } catch (error) {
+    res
+      .status(error.code || 500)
+      .send(error.message || "Error interno del servidor");
+  }
+});
+
+// Obtención de productos por categorias
+app.get("/productos_categorias", async (req, res) => {
+  try {
+    const productos_categorias = await getProductosCategorias();
+    res.json(productos_categorias);
+  } catch (error) {
+    res.status(error.code || 500).send(error);
+  }
+});
+
+// Obtención de productos en Sale
+app.get("/productos_sale", async (req, res) => {
+  try {
+    const productos_sale = await getProductosSale();
+    res.json(productos_sale);
+  } catch (error) {
+    res.status(error.code || 500).send(error);
+  }
+});
+
+// Manejo de errores 404
+app.use((req, res, next) => {
+  res
+    .status(404)
+    .json({ error: "Lo sentimos, recurso no encontrado. ¡Intenta otra vez!" });
 });
 
 // Añadimos una ruta adicional para mostrar un saludo
-app.get('/api/saludo', (req, res) => {
-    res.json({ mensaje: '¡Bienvenido a la API! Esperamos que disfrutes tu experiencia.' });
+app.get("/api/saludo", (req, res) => {
+  res.json({
+    mensaje: "¡Bienvenido a la API! Esperamos que disfrutes tu experiencia.",
+  });
 });
 
 // Manejo de errores: si no encontramos la ruta, enviamos un mensaje amable
 app.use((req, res, next) => {
-    res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
+  res
+    .status(404)
+    .json({ error: "Lo sentimos, recurso no encontrado. ¡Intenta otra vez!" });
 });
 
 // Iniciamos el servidor y mostramos un mensaje para confirmar que está funcionando
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}. ¡Gracias por usar nuestra aplicación!`);
+  console.log(
+    `Servidor escuchando en http://localhost:${PORT}. ¡Gracias por usar nuestra aplicación!`
+  );
 });
-

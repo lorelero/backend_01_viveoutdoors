@@ -5,7 +5,7 @@
 require("dotenv").config();
 
 // importando lo que necesitas de conection.js, conexion a la BD
-const { pool } = require("../conection/conection")
+const { pool } = require("../conection/conection");
 
 //variables globales de index.js
 let status = "";
@@ -26,9 +26,8 @@ const leerPublicaciones = async () => {
   }
 };
 
-
 //-------------------------------------------------------------------------------------------
-// FUNCIÓN PARA INSERTAR UN NUEVO PRODUCTO 
+// FUNCIÓN PARA INSERTAR UN NUEVO PRODUCTO
 
 const insertarProducto = async (nombre, descripcion, stock, precio) => {
   const consulta = `INSERT INTO productos (id_producto, nombre, descripcion, stock, precio) VALUES (DEFAULT, $1, $2, $3, $4) RETURNING *;`;
@@ -47,7 +46,6 @@ const insertarPublicacion = async (id_producto, id_usuario, estado) => {
   return result.rows[0]; // Retorna la publicación insertada
 };
 
-
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA INSERTAR UNA NUEVA IMAGEN DE PRODUCTO
 
@@ -58,11 +56,58 @@ const insertarImagenProducto = async (id_producto, url, texto_alternativo) => {
   return result.rows[0]; // Retorna la imagen insertada
 };
 
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA TRAER PRODUCTO
+const getProductos = async () => {
+  const { rows: productos } = await pool.query("SELECT * FROM productos");
+  return productos;
+};
 
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA TRAER PRODUCTO POR ID (Tengo dudas con esta función)
+const getProductoById = async (id) => {
+  const { rows } = await pool.query(
+    `SELECT p.id_producto, p.nombre, p.descripción AS descripcion, p.precio, 
+              i.url AS foto
+       FROM productos p
+       LEFT JOIN imagenes_productos i ON p.id_producto = i.id_producto
+       WHERE p.id_producto = $1 LIMIT 1`,
+    [id]
+  );
+  if (rows.length === 0) {
+    throw { code: 404, message: "Producto no encontrado" };
+  }
+  return rows[0];
+};
 
-module.exports = { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto };
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA TRAER PRODUCTO POR CATEGORIAS
+const getProductosCategorias = async () => {
+  const { rows: productos_categorias } = await pool.query(
+    "SELECT * FROM productos_categorias"
+  );
+  return productos_categorias;
+};
 
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA TRAER PRODUCTO SALE
+const getProductosSale = async () => {
+  const { rows: productos_sale } = await pool.query(
+    "SELECT * FROM productos_sale"
+  );
+  return productos_sale;
+};
 
+module.exports = {
+  leerPublicaciones,
+  insertarProducto,
+  insertarPublicacion,
+  insertarImagenProducto,
+  getProductos,
+  getProductoById,
+  getProductosSale,
+  getProductosCategorias,
+};
 
 //-------------------------------------------------------------------------------------------
 // async function obtenerCategorias() {
