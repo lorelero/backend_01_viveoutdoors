@@ -71,6 +71,6 @@ const iniciarSesion = async (req, res) => {
 const cerrarSesion = (req, res) => {
     return res
         .clearCookie('access_token')
-        .json({ message: 'Logout successful' });
+        .json({ message: 'Sesión cerrada exitosamente' });
 };
 
