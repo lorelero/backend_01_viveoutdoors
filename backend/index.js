@@ -1,11 +1,16 @@
 // npm init --yes
 // npm i express
-// npm i express-fileupload
+// npm i express-fileupload  -- PENDIENTE AÚN
 // npm i pg
+// npm i pg-format
 // npm i jsonwebtoken
 // npm i nodemon -D
 // npm i morgan
 // npm i dotenv
+// npm i jsonwebtoken
+// npm i bcryptjs
+// npm i cors
+// npm i supertest
 // crear .env
 // crear .gitignore
 // abrir psql y crear database y table
@@ -42,7 +47,7 @@ const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = requi
 
 
 
-// Middleware
+// Middlewares
 app.use(cors()); // Permite que nuestra API sea accesible desde diferentes orígenes
 app.use(morgan('dev')); // Registra las solicitudes en la consola para facilitar el desarrollo
 app.use(helmet());
@@ -89,7 +94,7 @@ app.get('/protected', accesoProtegido);
 
 
 
-// Ruta para obtener publicaciones Y que se enlisten
+// RUTA PARA OBTENER PUBLICACIONES Y QUE SE ENLISTEN
 app.get("/publicaciones", async (req, res) => {
     try {
         const obtenerPublicaciones = await leerPublicaciones();
@@ -100,7 +105,7 @@ app.get("/publicaciones", async (req, res) => {
     }
 });
 
-// Ruta para crear una nueva publicación: la cual inserta un nuevo producto e imagen
+// RUTA PARA CREAR UNA NUEVA PUBLICACIÓN: la cual inserta un nuevo producto e imagen
 
 app.post('/crearpublicacion', async (req, res) => {
     const { nombre, descripcion, stock, precio, url, texto_alternativo, id_usuario, estado } = req.body;
