@@ -8,7 +8,7 @@ const crypto = require('crypto');
 
 
 // UserRepository verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
-export class UserRepository {  
+class UserRepository {  
     static async create({ nombre, apellido, email, telefono, password, rol}) {
         // Verificar si el usuario ya existe
         const existingUser = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
@@ -45,3 +45,5 @@ export class UserRepository {
         return publicUser;
     }
 }
+
+module.exports = { UserRepository };

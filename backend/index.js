@@ -24,7 +24,6 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 const helmet = require('helmet');
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require('express-validator');
@@ -57,12 +56,7 @@ app.use(morgan('dev')); // Registra las solicitudes en la consola para facilitar
 app.use(helmet());
 app.use(express.json());// Permite que nuestra aplicación entienda el formato JSON en las solicitudes
 app.use(cookieParser());
-app.use(session({
-    secret: SECRET_JWT_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' }
-}));
+
 // Manejo de errores 404 
 app.use((req, res, next) => { 
     res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
