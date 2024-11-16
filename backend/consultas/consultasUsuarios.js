@@ -2,7 +2,9 @@
 const UserRepository = require('./user-repository.js');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const { SECRET_JWT_KEY } = require('../config.js');
+//const { SECRET_JWT_KEY } = require('../config.js');
+require('dotenv').config(); // Importa y configura dotenv
+const SECRET_JWT_KE = process.env.SECRET_JWT_KEY // extrae el secret key del .env
 const { pool } = require("../conection/conection");
 
 
