@@ -132,7 +132,7 @@ INSERT INTO direcciones (id_direccion, id_usuario, direccion, ciudad, region) VA
 
 -- Tabla categorías, 4 categorías
 
-INSERT INTO categorias (id_categoria, nombre, sale) VALUES (DEFAULT, 'Carpas'), (DEFAULT, 'Mochilas'), (DEFAULT, 'Sacos & Colchonetas'), (DEFAULT, 'Accesorios'); 
+INSERT INTO categorias (id_categoria, nombre) VALUES (DEFAULT, 'Carpas'), (DEFAULT, 'Mochilas'), (DEFAULT, 'Sacos & Colchonetas'), (DEFAULT, 'Accesorios'); 
 
 
 -- Tabla productos:  2 productos para cada categoría
