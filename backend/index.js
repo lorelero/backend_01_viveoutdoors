@@ -1,6 +1,22 @@
+// npm init --yes
+// npm i express
+// npm i express-fileupload
+// npm i pg
+// npm i jsonwebtoken
+// npm i nodemon -D
+// npm i morgan
+// npm i dotenv
+// crear .env
+// crear .gitignore
+// abrir psql y crear database y table
+
+// Importamos las dependencias necesarias para nuestra aplicación
+
 require('dotenv').config(); 
 
 const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const helmet = require('helmet');
