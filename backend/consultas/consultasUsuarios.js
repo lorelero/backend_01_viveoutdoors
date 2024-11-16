@@ -17,7 +17,7 @@ const { pool } = require("../conection/conection");
 // Si la entrada es válida, se llama a UserRepository.create para crear un nuevo usuario.
 
 const registrarUsuario = async (req, res) => {
-    const { username, password } = req.body;
+    const { nombre, apellido, email, telefono, password, rol } = req.body;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -25,8 +25,8 @@ const registrarUsuario = async (req, res) => {
     }
 
     try {
-        const id = await UserRepository.create({ username, password });  // verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
-        return res.status(201).json({ id });
+        const id = await UserRepository.create({ nombre, apellido, email, telefono, password, rol });  // verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
+        return res.status(201).json({ id });  // tengo la duda si debe ser id_usuario
     } catch (error) {
         return res.status(400).send(error.message);
     }
