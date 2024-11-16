@@ -28,17 +28,17 @@ export class UserRepository {
 
     static async login({ email, password }) {
         // Buscar el usuario por nombre de usuario
-        const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
         const user = result.rows[0];
 
         if (!user) {
-            throw new Error('Username does not exist');
+            throw new Error('El correo electrónico no ha sido registrado');
         }
 
         // Verificar la contraseña
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) {
-            throw new Error('Password is invalid');
+            throw new Error('Contraseña incorrecta, intente nuevamente.');
         }
 
         // Retornar el usuario sin la contraseña
