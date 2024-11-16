@@ -12,8 +12,6 @@
 
 // Importamos las dependencias necesarias para nuestra aplicación
 
-require('dotenv').config(); 
-
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -22,14 +20,19 @@ const session = require('express-session');
 const helmet = require('helmet');
 const jwt = require("jsonwebtoken");
 
-const { PORT, SECRET_JWT_KEY } = process.env; 
-const { 
-    registrarUsuario, 
-    iniciarSesion, 
-    cerrarSesion, 
-    accesoProtegido, 
-    pool 
-} = require('./consultas/consultasUsuarios.js');
+require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
+
+//importamos funciones necesarias para las rutas
+const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
+
+// Configuramos el puerto en el que escuchará nuestra aplicación
+const PORT = process.env.PORT_SERVER || 3000;
+
+
+// const { PORT, SECRET_JWT_KEY } = process.env; 
+
+const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido, 
+pool } = require('./consultas/consultasUsuarios.js');
 const { 
     leerPublicaciones, 
     insertarProducto, 
@@ -38,7 +41,8 @@ const {
 } = require('./consultas/consultas.js');
 const { body, validationResult } = require('express-validator');
 
-const app = express();
+// Creamos una instancia de Express
+const app = express(); 
 
 // Middleware
 app.use(helmet());
