@@ -22,12 +22,16 @@ const jwt = require("jsonwebtoken");
 
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 
+// Creamos una instancia de Express
+const app = express(); 
 
 // Configuramos el puerto en el que escuchará nuestra aplicación
 const PORT = process.env.PORT_SERVER || 3000;
 
-// Creamos una instancia de Express
-const app = express(); 
+// Iniciamos el servidor y mostramos un mensaje para confirmar que está funcionando
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
 
 // const { PORT, SECRET_JWT_KEY } = process.env; 
 
@@ -51,9 +55,9 @@ app.use(session({
     cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
-// Definimos nuestras rutas
+// DEFINIMOS NUESTRAS RUTAS ----------------------
 
-// RUTA POST PARA REGISTRO DE NUEVOS USUARIOS
+// RUTA POST PARA REGISTRO DE NUEVOS USUARIOS --------------------------
 app.post('/register', 
     body('username').isString().notEmpty(),
     body('password').isString().isLength({ min: 6 }),
@@ -66,7 +70,7 @@ app.post('/register',
     }
 );
 
-//RUTA LOGIN PARA INGRESO DE USUARIOS YA REGISTRADOS
+//RUTA LOGIN PARA INGRESO DE USUARIOS YA REGISTRADOS --------------------------
 app.post('/login', 
     body('username').isString().notEmpty(),
     body('password').isString().isLength({ min: 6 }),
@@ -79,14 +83,9 @@ app.post('/login',
     }
 );
 
+// RUTAS PENDIENTES?  --------------------------
 app.post('/logout', cerrarSesion);
 app.get('/protected', accesoProtegido);
-
-// Manejo de errores
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
 
 
 
@@ -134,12 +133,4 @@ app.use((req, res, next) => {
     res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
 });
 
-// Añadimos una ruta adicional para mostrar un saludo
-app.get('/api/saludo', (req, res) => {
-    res.json({ mensaje: '¡Bienvenido a la API! Esperamos que disfrutes tu experiencia.' });
-});
 
-// Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
