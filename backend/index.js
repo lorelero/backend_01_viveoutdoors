@@ -11,6 +11,10 @@
 // npm i bcryptjs
 // npm i cors
 // npm i supertest
+// npm install cookie-parser
+// npm install express-session
+// npm i helmet
+// npm i express-validator
 // crear .env
 // crear .gitignore
 // abrir psql y crear database y table
