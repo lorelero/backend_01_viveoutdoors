@@ -63,12 +63,11 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
-
-// para errores centralizados: 
-app.use ((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({error:"Algo va mal!"});
+// Manejo de errores 404 
+app.use((req, res, next) => { 
+    res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
 });
+
 
 // DEFINIMOS NUESTRAS RUTAS ----------------------
 
@@ -147,9 +146,5 @@ app.post('/crearpublicacion', async (req, res) => {
     }
 });
 
-// Manejo de errores 404 
-app.use((req, res, next) => { 
-    res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
-});
 
 
