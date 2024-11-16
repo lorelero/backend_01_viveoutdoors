@@ -7,7 +7,8 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
 
-export class UserRepository {
+// UserRepository verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
+export class UserRepository {  
     static async create({ username, password }) {
         // Verificar si el usuario ya existe
         const existingUser = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
