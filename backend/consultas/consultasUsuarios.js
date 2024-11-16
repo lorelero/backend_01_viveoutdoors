@@ -53,10 +53,10 @@ const iniciarSesion = async (req, res) => {
 
         res
             .cookie('access_token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'PRODUCTION',  // configuración de una cookie en un entorno Node.js y se refiere a la seguridad de la cookie.
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 // 1 hora
+                httpOnly: true, // la cookie no es accesible mediante JS
+                secure: process.env.NODE_ENV === 'PRODUCTION',  // configuración de una cookie en un entorno Node.js y se refiere a la seguridad de la cookie, la cookie solo se enviará a través de HTTPS en producción
+                sameSite: 'strict', // previene ataques CSRF
+                maxAge: 1000 * 60 * 60 // la cookie expira en 1 hora 
             })
             .json({ user, token });
     } catch (error) {
