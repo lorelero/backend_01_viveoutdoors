@@ -1,18 +1,10 @@
-const pkg = require('pg');
-const { Pool } = pkg;
+
 const UserRepository = require('./user-repository.js');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const { SECRET_JWT_KEY } = require('../config.js');
+const { pool } = require("../conection/conection");
 
-// Configuración del pool de conexiones a PostgreSQL
-const pool = new Pool({
-    host: 'localhost',
-    user: 'postgres',
-    password: '3434',
-    database: 'viveoutdoors',
-    allowExitOnIdle: true
-});
 
 // Función para registrar un nuevo usuario
 const registrarUsuario = async (req, res) => {

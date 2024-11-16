@@ -1,8 +1,8 @@
 // user-repository.js
+//maneja la creación y autenticación de usuarios en una base de datos.
 
 // importando lo que necesitas de conection.js, conexion a la BD
 const { pool } = require("../conection/conection");
-
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
