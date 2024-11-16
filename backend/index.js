@@ -7,7 +7,6 @@
 // npm i nodemon -D
 // npm i morgan
 // npm i dotenv
-// npm i jsonwebtoken
 // npm i bcryptjs
 // npm i cors
 // npm i supertest
@@ -30,6 +29,10 @@ const helmet = require('helmet');
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require('express-validator');
 
+//importamos funciones necesarias para las rutas
+const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
+const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = require('./consultas/consultasUsuarios.js');
+
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 
 // Creamos una instancia de Express
@@ -45,9 +48,6 @@ app.listen(PORT, () => {
 
 // const { PORT, SECRET_JWT_KEY } = process.env; 
 
-//importamos funciones necesarias para las rutas
-const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
-const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = require('./consultas/consultasUsuarios.js');
 
 
 
@@ -64,11 +64,21 @@ app.use(session({
     cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
+// para errores centralizados: 
+app.use ((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({error:"Algo va mal!"});
+});
+
 // DEFINIMOS NUESTRAS RUTAS ----------------------
 
 // RUTA POST PARA REGISTRO DE NUEVOS USUARIOS --------------------------
-app.post('/register', 
-    body('username').isString().notEmpty(),
+app.post('/registro', 
+    body('nombre').isString().notEmpty(),
+    body('apellido').isString().notEmpty(),
+    body('email').isEmail(),
+    body('telefono').isString().notEmpty(),
+    //body('rol').isString().notEmpty(),  ---> en el registro no se elige rol, se agrega por default en el insert
     body('password').isString().isLength({ min: 6 }),
     (req, res, next) => {
         const errors = validationResult(req);
@@ -81,7 +91,7 @@ app.post('/register',
 
 //RUTA LOGIN PARA INGRESO DE USUARIOS YA REGISTRADOS --------------------------
 app.post('/login', 
-    body('username').isString().notEmpty(),
+    body('email').isString().notEmpty(),
     body('password').isString().isLength({ min: 6 }),
     (req, res, next) => {
         const errors = validationResult(req);
@@ -92,9 +102,9 @@ app.post('/login',
     }
 );
 
-// RUTAS PENDIENTES?  --------------------------
+// RUTAS PARA CERRAR SESIÓN  --------------------------
 app.post('/logout', cerrarSesion);
-app.get('/protected', accesoProtegido);
+//app.get('/protected', accesoProtegido);
 
 
 
