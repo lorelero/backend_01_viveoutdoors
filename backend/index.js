@@ -20,6 +20,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const helmet = require('helmet');
+const jwt = require("jsonwebtoken");
+
 const { PORT, SECRET_JWT_KEY } = process.env; 
 const { 
     registrarUsuario, 
