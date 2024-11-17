@@ -65,14 +65,14 @@ const getProductos = async () => {
 
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA TRAER PRODUCTO POR ID (Tengo dudas con esta función)
-const getProductoById = async (id) => {
+const getProductoById = async (id_producto) => {
   const { rows } = await pool.query(
-    `SELECT p.id_producto, p.nombre, p.descripción AS descripcion, p.precio, 
+    `SELECT p.id_producto, p.nombre, p.descripcion AS descripcion, p.precio, 
               i.url AS foto
        FROM productos p
        LEFT JOIN imagenes_productos i ON p.id_producto = i.id_producto
        WHERE p.id_producto = $1 LIMIT 1`,
-    [id]
+    [id_producto]
   );
   if (rows.length === 0) {
     throw { code: 404, message: "Producto no encontrado" };
@@ -92,9 +92,7 @@ const getProductosCategorias = async () => {
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA TRAER PRODUCTO SALE
 const getProductosSale = async () => {
-  const { rows: productos_sale } = await pool.query(
-    "SELECT * FROM productos_sale"
-  );
+  const { rows: productos_sale } = await pool.query("SELECT * FROM productos_sale WHERE estado = 'activo';");
   return productos_sale;
 };
 

@@ -212,8 +212,8 @@ app.get("/productos", async (req, res) => {
 // obtención de productos por id
 app.get("/productos/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const producto = await getProductoById(id);
+    const { id_producto } = req.params;
+    const producto = await getProductoById(id_produto);
     res.json(producto);
   } catch (error) {
     res
