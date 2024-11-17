@@ -26,7 +26,21 @@ const registrarUsuario = async (req, res) => {
     try {
         const user = await UserRepository.create({ nombre, apellido, email, telefono, password, rol });  // verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
         const { id_usuario, rol: userRol } = user; // Extrae campos necesrios
-        return res.status(201).json({ id_usuario, rol:userRol }); 
+        const token = jwt.sign(
+            { id: id_usuario, email: user.email, rol: user.rol },
+            SECRET_JWT_KEY,
+            { expiresIn: '1h' }
+        );
+        //agregar la cookie con el token
+        res
+        .cookie('access_token', token, {
+            httpOnly: true, // la cookie no es accesible mediante JS
+            secure: process.env.NODE_ENV === 'PRODUCTION',  // configuración de una cookie en un entorno Node.js y se refiere a la seguridad de la cookie, la cookie solo se enviará a través de HTTPS en producción
+            sameSite: 'strict', // previene ataques CSRF
+            maxAge: 1000 * 60 * 60 // la cookie expira en 1 hora 
+        })
+        .status(201).json({ id_usuario, rol: userRol, token });
+    
     } catch (error) {
         return res.status(400).send(error.message);
     }

@@ -70,6 +70,26 @@ app.use(helmet());
 app.use(express.json()); // Permite que nuestra aplicación entienda el formato JSON en las solicitudes
 app.use(cookieParser());
 
+const verifyToken = (req, res, next) =>{
+    const token = req.cookies.access_token;
+    if(!token){
+        return res.status(403).json({message: "Acceso denegado, no hay token de autentificación."})
+    }
+try
+{
+    const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
+    req.user = decoded;
+    next();
+} catch (error){
+    return res.status(401).json({message: "Token no válido."});
+}
+
+};
+
+
+
+
+
 // DEFINIMOS NUESTRAS RUTAS ----------------------
 
 // Añadimos una ruta adicional para mostrar un saludo
@@ -128,7 +148,7 @@ app.get("/publicaciones", async (req, res) => {
 
 // RUTA PARA CREAR UNA NUEVA PUBLICACIÓN: la cual inserta un nuevo producto e imagen
 
-app.post("/crearpublicacion", async (req, res) => {
+app.post("/crearpublicacion", verifyToken, async (req, res) => {
   const {
     nombre,
     descripcion,
@@ -136,9 +156,10 @@ app.post("/crearpublicacion", async (req, res) => {
     precio,
     url,
     texto_alternativo,
-    id_usuario,
     estado,
   } = req.body;
+
+const id_usuario = req.user.id; // obtener el id_usuario de token JWT
 
   try {
     // Insertar el producto y obtener su ID
