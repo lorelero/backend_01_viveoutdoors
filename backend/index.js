@@ -241,7 +241,7 @@ app.get("/productos_sale", async (req, res) => {
 });
 
 // activar publicación
-app.get("/publicacionactiva/:id", async (req, res) => {
+app.put("/publicacionactiva/:id", async (req, res) => {
     const { id } = req.params;
     try {
     await publicacionActiva(id);
@@ -253,7 +253,7 @@ app.get("/publicacionactiva/:id", async (req, res) => {
 });
 
 // desactivar publicación
-app.get("/publicacioninactiva/:id", async (req, res) => {
+app.put("/publicacioninactiva/:id", async (req, res) => {
   const { id } = req.params;
   try {
   await publicacionInactiva(id);
