@@ -11,7 +11,7 @@
 // npm i cors
 // npm i supertest
 // npm install cookie-parser
-// npm install express-session
+// npm install express-session  --se puede eliminar
 // npm i helmet
 // npm i express-validator
 // crear .env
@@ -57,13 +57,15 @@ app.use(helmet());
 app.use(express.json());// Permite que nuestra aplicación entienda el formato JSON en las solicitudes
 app.use(cookieParser());
 
-// Manejo de errores 404 
-app.use((req, res, next) => { 
-    res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
-});
+
 
 
 // DEFINIMOS NUESTRAS RUTAS ----------------------
+
+// Añadimos una ruta adicional para mostrar un saludo
+app.get('/', (req, res) => {
+    res.json({ mensaje: '¡Bienvenido a la API! Esperamos que disfrutes tu experiencia.' });
+});
 
 // RUTA POST PARA REGISTRO DE NUEVOS USUARIOS --------------------------
 app.post('/registro', 
@@ -141,4 +143,7 @@ app.post('/crearpublicacion', async (req, res) => {
 });
 
 
-
+// Manejo de errores 404 
+app.use((req, res, next) => { 
+    res.status(404).json({ error: 'Lo sentimos, recurso no encontrado. ¡Intenta otra vez!' });
+});
