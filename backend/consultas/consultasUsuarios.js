@@ -9,8 +9,7 @@ const { validationResult } = require('express-validator'); // para validar los d
 
 //const { SECRET_JWT_KEY } = require('../config.js');
 require('dotenv').config(); // Importa y configura dotenv
-const SECRET_JWT_KE = process.env.SECRET_JWT_KEY // extrae el secret key del .env
-const { pool } = require("../conection/conection");
+const SECRET_JWT_KEY = process.env.SECRET_JWT_KEY // extrae el secret key del .env
 
 
 // Función para registrar un nuevo usuario

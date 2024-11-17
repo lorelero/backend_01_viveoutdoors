@@ -30,7 +30,7 @@ const { body, validationResult } = require('express-validator');
 
 //importamos funciones necesarias para las rutas
 const { leerPublicaciones, insertarProducto, insertarPublicacion, insertarImagenProducto} = require('./consultas/consultas.js');
-const { registrarUsuario, iniciarSesion,  cerrarSesion, accesoProtegido} = require('./consultas/consultasUsuarios.js');
+const { registrarUsuario, iniciarSesion,  cerrarSesion} = require('./consultas/consultasUsuarios.js');
 
 require('dotenv').config(); // Cargamos las variables de entorno desde el archivo .env
 

@@ -4,7 +4,7 @@
 // importando lo que necesitas de conection.js, conexion a la BD
 const { pool } = require("../conection/conection");
 const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+// const crypto = require('crypto'); // no está siendo usado , se peude borrar
 
 
 // UserRepository verifica si el usuario existe, hashea la contraseña, genera un ID único e inserta el nuevo usuario en la base de datos
