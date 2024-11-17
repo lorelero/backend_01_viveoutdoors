@@ -240,6 +240,31 @@ app.get("/productos_sale", async (req, res) => {
   }
 });
 
+// activar publicación
+app.get("/publicacionactiva/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+    await publicacionActiva(id);
+    res.status(200).json({message: "Estado actualizado: Activo"});
+  } catch (error) {
+    console.error("Error al actualizar el estado de la publicación:", error);
+    res.status(500).json({ error: "Error al activar la publicación" });
+  }
+});
+
+// desactivar publicación
+app.get("/publicacioninactiva/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+  await publicacionInactiva(id);
+  res.status(200).json({message: "Estado actualizado: Inactivo"});
+} catch (error) {
+  console.error("Error al actualizar el estado de la publicación:", error);
+  res.status(500).json({ error: "Error al activar la publicación" });
+}
+});
+
+
 // Manejo de errores 404
 app.use((req, res, next) => {
   res
