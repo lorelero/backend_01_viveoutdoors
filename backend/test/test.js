@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../index'); // Asegúrate de que la ruta sea correcta
-const { pool, testConnection } = require('../db'); // Si necesitas la conexión a la base de datos
+const { pool, testConnection } = require("../conection/conection"); // Si necesitas la conexión a la base de datos
 
 describe('API Endpoints', () => {
   
@@ -23,11 +23,11 @@ describe('POST /registro', () => {
                     email: 'juan@example.com',
                     telefono: '123456789',
                     password: '123456',
-                    rol: 'usuario'
+                    rol: 'cliente'
                 });
             expect(response.status).toBe(201);
             expect(response.body).toHaveProperty('id_usuario');
-            expect(response.body).toHaveProperty('rol', 'usuario');
+            expect(response.body).toHaveProperty('rol', 'cliente');
         });
 
         it('debería devolver un error si el usuario ya existe', async () => {
@@ -39,7 +39,7 @@ describe('POST /registro', () => {
                     email: 'juan@example.com',
                     telefono: '123456789',
                     password: '123456',
-                    rol: 'usuario'
+                    rol: 'cliente'
                 });
             expect(response.status).toBe(400);
             expect(response.body).toHaveProperty('error', 'El usuario ya existe con este correo electrónico');
