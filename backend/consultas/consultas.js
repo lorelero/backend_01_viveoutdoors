@@ -98,6 +98,16 @@ const getProductosSale = async () => {
   return productos_sale;
 };
 
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA ACTUALIZAR ESTADO DE PUBLICACIÓN A INACTIVA
+const publicacionInactiva = async (id_publicacion) => {
+  const consulta = "UPDATE publicaciones SET estado = $1, fecha_actualizacion = NOW() WHERE id_publicacion = $2 RETURNING *;";
+  const values =["Inactivo", id_publicacion];
+  const result = await pool.query(consulta, values);
+  return result.rows[0]; // Retorna la publicación actualizada
+  };
+
+  
 module.exports = {
   leerPublicaciones,
   insertarProducto,
@@ -107,6 +117,7 @@ module.exports = {
   getProductoById,
   getProductosSale,
   getProductosCategorias,
+  publicacionInactiva
 };
 
 //-------------------------------------------------------------------------------------------
