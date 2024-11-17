@@ -275,11 +275,5 @@ app.use((req, res, next) => {
 });
 
 
-//pendientes
-//verificar ruta id producto
-// ver ruta delete, quizas es mas conveniente activar y desactivar pero no eliminar productos ni personas
-//ver una ruta update ? quizas el editar la direccion o editar datos del perfil del usuario ? o editar la publicacion al activarla o desactivarla
 // rehacer la bbdd con los numeros de productos correlativos en todas las tablas correspondientes
 // ojo en la bbdd al crear la tabla hay unos check con "Inactivo" "Activo" en mayusuculas y otros con minusculas
-//poner todo igual y en los insert into que eso sea coherente. 
-//considerar permitir el delete on cascade
