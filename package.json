@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "-": "^0.0.1",
-    "D": "^1.0.0",
+    "D": "^1.0.0"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.7"
   }
 }
