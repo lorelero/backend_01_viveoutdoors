@@ -15,7 +15,10 @@ let message = "";
 // FUNCIÓN PARA OBTENER LAS PUBLICACIONES DE LA BBDD Y SUS CAMPOS RELACIONADOS CON TABLA PRODUCTO E IMAGENES
 
 const leerPublicaciones = async () => {
-  const consulta = `SELECT DISTINCT ON (p.id_producto) pub.id_publicacion, pub.fecha_creacion, pub.fecha_actualizacion, pub.estado, p.id_producto, p.nombre AS producto_nombre, p.descripcion AS producto_descripcion, p.stock, p.precio, img.url AS producto_imagen FROM publicaciones pub JOIN productos p ON pub.id_producto = p.id_producto LEFT JOIN imagenes_productos img ON p.id_producto = img.id_producto ORDER BY p.id_producto, img.id_imagen;`;
+  const consulta = `SELECT DISTINCT ON (p.id_producto)  pub.id_publicacion,  pub.fecha_creacion,  pub.fecha_actualizacion,  pub.estado,  p.id_producto,  p.nombre AS producto_nombre,  p.descripcion AS producto_descripcion,  p.stock,  p.precio,  img.url AS producto_imagen, cat.nombre AS categoria_nombre FROM publicaciones pub JOIN productos p ON pub.id_producto = p.id_producto LEFT JOIN imagenes_productos img ON p.id_producto = img.id_producto JOIN productos_categorias pc ON p.id_producto = pc.id_producto JOIN categorias cat ON pc.id_categoria = cat.id_categoria ORDER BY p.id_producto, img.id_imagen;`;
+
+
+  // const consulta = `SELECT DISTINCT ON (p.id_producto) pub.id_publicacion, pub.fecha_creacion, pub.fecha_actualizacion, pub.estado, p.id_producto, p.nombre AS producto_nombre, p.descripcion AS producto_descripcion, p.stock, p.precio, img.url AS producto_imagen FROM publicaciones pub JOIN productos p ON pub.id_producto = p.id_producto LEFT JOIN imagenes_productos img ON p.id_producto = img.id_producto ORDER BY p.id_producto, img.id_imagen;`;
   try {
     const { rows } = await pool.query(consulta);
     console.log("Publicaciones: ", rows);
@@ -61,7 +64,7 @@ const insertarImagenProducto = async (id_producto, url, texto_alternativo) => {
 // FUNCIÓN PARA INSERTAR UN PRODUCTO CON SU CATEGORÍA
 
 const insertarProductosCategorias = async (id_producto, id_categoria) => {
-  const consulta = `INSERT INTO productos_categoria (id_producto, id_categoria) VALUES ($1, $2) RETURNING *;`;
+  const consulta = `INSERT INTO productos_categorias (id_producto, id_categoria) VALUES ($1, $2) RETURNING *;`;
   const values = [id_producto, id_categoria];
   const result = await pool.query(consulta, values);
   return result.rows[0]; // Retorna la imagen insertada

@@ -75,7 +75,7 @@ app.use(express.json()); // Permite que nuestra aplicación entienda el formato 
 app.use(cookieParser());
 
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.access_token;
+  const token = req.headers.authorization?.split(" ")[1]; // Extraer el token del formato 'Bearer <token>'
   if (!token) {
     return res
       .status(403)
@@ -86,7 +86,7 @@ const verifyToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Token no válido." });
+    return res.status(401).json({ message: "Token no válido o expirado" });
   }
 };
 
