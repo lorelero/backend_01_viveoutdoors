@@ -35,7 +35,9 @@ const {
   insertarPublicacion,
   insertarImagenProducto,
   publicacionActiva,
-  publicacionInactiva
+  publicacionInactiva,
+  insertarProductosCategorias,
+  obtenerCategorias
 } = require("./consultas/consultas.js");
 const {
   registrarUsuario,
@@ -72,25 +74,21 @@ app.use(helmet());
 app.use(express.json()); // Permite que nuestra aplicación entienda el formato JSON en las solicitudes
 app.use(cookieParser());
 
-const verifyToken = (req, res, next) =>{
-    const token = req.cookies.access_token;
-    if(!token){
-        return res.status(403).json({message: "Acceso denegado, no hay token de autentificación."})
-    }
-try
-{
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.access_token;
+  if (!token) {
+    return res
+      .status(403)
+      .json({ message: "Acceso denegado, no hay token de autentificación." });
+  }
+  try {
     const decoded = jwt.verify(token, process.env.SECRET_JWT_KEY);
     req.user = decoded;
     next();
-} catch (error){
-    return res.status(401).json({message: "Token no válido."});
-}
-
+  } catch (error) {
+    return res.status(401).json({ message: "Token no válido." });
+  }
 };
-
-
-
-
 
 // DEFINIMOS NUESTRAS RUTAS ----------------------
 
@@ -149,6 +147,7 @@ app.get("/publicaciones", async (req, res) => {
 });
 
 // RUTA PARA CREAR UNA NUEVA PUBLICACIÓN: la cual inserta un nuevo producto e imagen
+//modifica cuatro tablas: publicacion, imagen, producto, categoria
 
 app.post("/crearpublicacion", verifyToken, async (req, res) => {
   const {
@@ -158,10 +157,10 @@ app.post("/crearpublicacion", verifyToken, async (req, res) => {
     precio,
     url,
     texto_alternativo,
-    estado,
+    id_categoria,
   } = req.body;
 
-const id_usuario = req.user.id; // obtener el id_usuario de token JWT
+  const id_usuario = req.user.id; // obtener el id_usuario de token JWT
 
   try {
     // Insertar el producto y obtener su ID
@@ -182,13 +181,19 @@ const id_usuario = req.user.id; // obtener el id_usuario de token JWT
     // Insertar la publicación con el ID del nuevo producto
     const nuevaPublicacion = await insertarPublicacion(
       nuevoProducto.id_producto,
-      id_usuario,
-      estado
+      id_usuario
+    );
+
+    // Insertar el producto con su categoría respectivo 
+    const nuevoProductoCategoria = await insertarProductosCategorias(
+      nuevoProducto.id_producto,
+      id_categoria
     );
 
     res.status(201).json({
       mensaje: "Publicación creada exitosamente",
       producto: nuevoProducto,
+      categoria: nuevoProductoCategoria,
       imagen: nuevaImagen,
       publicacion: nuevaPublicacion,
     });
@@ -232,6 +237,17 @@ app.get("/productos_categorias", async (req, res) => {
   }
 });
 
+// obtención de categorias y sus nombres
+app.get("/categorias", async (req, res) => {
+  try {
+    const categorias = await obtenerCategorias();
+    res.json(categorias);
+  } catch (error) {
+    res.status(error.code || 500).send(error);
+  }
+});
+
+
 // obtención de productos en Sale
 app.get("/productos_sale", async (req, res) => {
   try {
@@ -244,10 +260,10 @@ app.get("/productos_sale", async (req, res) => {
 
 // activar publicación
 app.put("/publicacionactiva/:id", async (req, res) => {
-    const { id } = req.params;
-    try {
+  const { id } = req.params;
+  try {
     await publicacionActiva(id);
-    res.status(200).json({message: "Estado actualizado: Activo"});
+    res.status(200).json({ message: "Estado actualizado: Activo" });
   } catch (error) {
     console.error("Error al actualizar el estado de la publicación:", error);
     res.status(500).json({ error: "Error al activar la publicación" });
@@ -258,22 +274,23 @@ app.put("/publicacionactiva/:id", async (req, res) => {
 app.put("/publicacioninactiva/:id", async (req, res) => {
   const { id } = req.params;
   try {
-  await publicacionInactiva(id);
-  res.status(200).json({message: "Estado actualizado: Inactivo"});
-} catch (error) {
-  console.error("Error al actualizar el estado de la publicación:", error);
-  res.status(500).json({ error: "Error al activar la publicación" });
-}
+    await publicacionInactiva(id);
+    res.status(200).json({ message: "Estado actualizado: Inactivo" });
+  } catch (error) {
+    console.error("Error al actualizar el estado de la publicación:", error);
+    res.status(500).json({ error: "Error al activar la publicación" });
+  }
 });
-
 
 // Manejo de errores 404
 app.use((req, res, next) => {
   res
     .status(404)
-    .json({ error: "Lo sentimos, recurso no encontrado. ¡Intenta otra vez!", error });
+    .json({
+      error: "Lo sentimos, recurso no encontrado. ¡Intenta otra vez!",
+      error,
+    });
 });
-
 
 // rehacer la bbdd con los numeros de productos correlativos en todas las tablas correspondientes
 // ojo en la bbdd al crear la tabla hay unos check con "Inactivo" "Activo" en mayusuculas y otros con minusculas

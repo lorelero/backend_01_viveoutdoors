@@ -39,9 +39,9 @@ const insertarProducto = async (nombre, descripcion, stock, precio) => {
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA INSERTAR UNA NUEVA PUBLICACIÓN
 
-const insertarPublicacion = async (id_producto, id_usuario, estado) => {
-  const consulta = `INSERT INTO publicaciones (id_publicacion, id_producto, id_usuario, estado, fecha_creacion, fecha_actualizacion) VALUES (DEFAULT, $1, $2, $3, DEFAULT, DEFAULT) RETURNING *;`;
-  const values = [id_producto, id_usuario, estado];
+const insertarPublicacion = async (id_producto, id_usuario) => {
+  const consulta = `INSERT INTO publicaciones (id_publicacion, id_producto, id_usuario, estado, fecha_creacion, fecha_actualizacion) VALUES (DEFAULT, $1, $2, DEFAULT, DEFAULT, DEFAULT) RETURNING *;`;
+  const values = [id_producto, id_usuario];
   const result = await pool.query(consulta, values);
   return result.rows[0]; // Retorna la publicación insertada
 };
@@ -55,6 +55,18 @@ const insertarImagenProducto = async (id_producto, url, texto_alternativo) => {
   const result = await pool.query(consulta, values);
   return result.rows[0]; // Retorna la imagen insertada
 };
+
+
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA INSERTAR UN PRODUCTO CON SU CATEGORÍA
+
+const insertarProductosCategorias = async (id_producto, id_categoria) => {
+  const consulta = `INSERT INTO productos_categoria (id_producto, id_categoria) VALUES ($1, $2) RETURNING *;`;
+  const values = [id_producto, id_categoria];
+  const result = await pool.query(consulta, values);
+  return result.rows[0]; // Retorna la imagen insertada
+};
+
 
 //-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA TRAER PRODUCTO
@@ -114,6 +126,13 @@ const publicacionActiva = async (id_publicacion) => {
   return result.rows[0]; // Retorna la publicación actualizada
   };
  
+  //-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA OBTENER LAS CATEGORIAS
+const obtenerCategorias  = async () => {
+  const { rows: categorias } = await pool.query("SELECT * FROM categorias");
+  return categorias;
+};
+
 module.exports = {
   leerPublicaciones,
   insertarProducto,
@@ -124,7 +143,9 @@ module.exports = {
   getProductosSale,
   getProductosCategorias,
   publicacionInactiva,
-  publicacionActiva
+  publicacionActiva,
+  insertarProductosCategorias,
+  obtenerCategorias
 };
 
 //-------------------------------------------------------------------------------------------
