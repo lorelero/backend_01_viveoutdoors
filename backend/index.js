@@ -37,7 +37,8 @@ const {
   publicacionActiva,
   publicacionInactiva,
   insertarProductosCategorias,
-  obtenerCategorias
+  obtenerCategorias,
+  obtenerDatosPersonales,
 } = require("./consultas/consultas.js");
 const {
   registrarUsuario,
@@ -184,7 +185,7 @@ app.post("/crearpublicacion", verifyToken, async (req, res) => {
       id_usuario
     );
 
-    // Insertar el producto con su categoría respectivo 
+    // Insertar el producto con su categoría respectivo
     const nuevoProductoCategoria = await insertarProductosCategorias(
       nuevoProducto.id_producto,
       id_categoria
@@ -247,7 +248,6 @@ app.get("/categorias", async (req, res) => {
   }
 });
 
-
 // obtención de productos en Sale
 app.get("/productos_sale", async (req, res) => {
   try {
@@ -282,14 +282,30 @@ app.put("/publicacioninactiva/:id", async (req, res) => {
   }
 });
 
+// obtener datos personales del usuario por ID
+app.get("/datospersonales/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const datosPersonales = await obtenerDatosPersonales(id);
+    if (datosPersonales) {
+      res.status(200).json(datosPersonales); // Enviar los datos en la respuesta JSON
+    } else {
+      res.status(404).json({ error: "Usuario no encontrado" }); // Manejar el caso en que no se encuentra el usuario
+    }
+  } catch (error) {
+    console.error("Error al obtener los datos personales del usuario: ", error);
+    res
+      .status(500)
+      .json({ error: "Error al obtener los datos personales del usuario" });
+  }
+});
+
 // Manejo de errores 404
 app.use((req, res, next) => {
-  res
-    .status(404)
-    .json({
-      error: "Lo sentimos, recurso no encontrado. ¡Intenta otra vez!",
-      error,
-    });
+  res.status(404).json({
+    error: "Lo sentimos, recurso no encontrado. ¡Intenta otra vez!",
+    error,
+  });
 });
 
 // rehacer la bbdd con los numeros de productos correlativos en todas las tablas correspondientes

@@ -136,6 +136,15 @@ const obtenerCategorias  = async () => {
   return categorias;
 };
 
+//-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA OBTENER DATOS DE USUARIO
+const obtenerDatosPersonales = async (id_usuario) => {
+  const consulta = "SELECT * FROM usuarios WHERE id_usuario = $1 ; ";
+  const values =[id_usuario];
+  const result = await pool.query(consulta, values);
+  return result.rows[0]; // Retorna la publicación actualizada
+  };
+
 module.exports = {
   leerPublicaciones,
   insertarProducto,
@@ -148,7 +157,8 @@ module.exports = {
   publicacionInactiva,
   publicacionActiva,
   insertarProductosCategorias,
-  obtenerCategorias
+  obtenerCategorias,
+  obtenerDatosPersonales
 };
 
 //-------------------------------------------------------------------------------------------
