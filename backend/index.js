@@ -39,6 +39,11 @@ const {
   insertarProductosCategorias,
   obtenerCategorias,
   obtenerDatosPersonales,
+  obtenerVentas,
+  obtenerTienda,
+  cambiarDatosPersonales,
+  obtenerCategoriasHome,
+  obtenerSalesHome
 } = require("./consultas/consultas.js");
 const {
   registrarUsuario,
@@ -283,22 +288,83 @@ app.put("/publicacioninactiva/:id", async (req, res) => {
 });
 
 // obtener datos personales del usuario por ID
-app.get("/datospersonales/:id", async (req, res) => {
-  const { id } = req.params;
+app.get("/datospersonales", verifyToken, async (req, res) => {
+  const id_usuario = req.user.id; // ID extraído del token
+
   try {
-    const datosPersonales = await obtenerDatosPersonales(id);
+    const datosPersonales = await obtenerDatosPersonales(id_usuario);
     if (datosPersonales) {
-      res.status(200).json(datosPersonales); // Enviar los datos en la respuesta JSON
+      res.status(200).json(datosPersonales);
     } else {
-      res.status(404).json({ error: "Usuario no encontrado" }); // Manejar el caso en que no se encuentra el usuario
+      res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
-    console.error("Error al obtener los datos personales del usuario: ", error);
-    res
-      .status(500)
-      .json({ error: "Error al obtener los datos personales del usuario" });
+    console.error("Error al obtener los datos personales:", error);
+    res.status(500).json({ error: "Error al obtener los datos personales" });
   }
 });
+
+// MODIFICAR DATOS DE USUARIO
+app.put('/datospersonales', verifyToken, async (req, res) => {
+
+  const datosActualizados = req.body; // Datos enviados desde el frontend
+// console.log("id que llega mas datos en la ruta:" ,  datosActualizados )
+  try {
+    const resultado = await cambiarDatosPersonales( datosActualizados);
+    res.status(200).json(resultado); // Responder con los datos actualizados
+  } catch (error) {
+    console.error("Error al actualizar los datos personales:", error);
+    res.status(500).json({ error: 'No se pudo actualizar la información.' });
+  }
+});
+
+// RUTA PARA OBTENER VENTAS / PEDIDOS Y QUE SE ENLISTEN
+app.get("/ventas", async (req, res) => {
+  try {
+    const getVentas = await obtenerVentas();
+    res.json({ getVentas });
+  } catch (error) {
+    console.error("Error al obtener lista de ventas:", error);
+    res.status(500).json({ error: "Error al obtener ventas" });
+  }
+});
+
+
+// RUTA PARA OBTENER PRODUCTOS Y QUE SE ENLISTEN EN LA TIENDA, SOLO AQUELLOS QUE ESTAN ACTIVOS EN PUBLICACIONES
+app.get("/tienda", async (req, res) => {
+  try {
+    const tienda = await obtenerTienda();
+    res.json(tienda);
+  } catch (error) {
+    console.error("Error al obtener lista de ventas:", error);
+    res.status(500).json({ error: "Error al obtener ventas" });
+  }
+});
+
+// RUTA PARA OBTENER LOS CUATRO PRODUCTOS PARA LA SECCION DE CATEGORIAS EN EL HOME
+app.get("/categoriashome", async (req, res) => {
+  try {
+    const categoriasHome = await obtenerCategoriasHome();
+    res.json(categoriasHome);
+    console.log("resultado que devuelve la ruta: ", categoriasHome);
+  } catch (error) {
+    console.error("Error al obtener los productos:", error);
+    res.status(500).json({ error: "Error al obtener los productos" });
+  }
+});
+
+// RUTA PARA OBTENER LOS CUATRO PRODUCTOS sales EN EL HOME
+app.get("/saleshome", async (req, res) => {
+  try {
+    const salesHome = await obtenerSalesHome();
+    res.json(salesHome);
+    console.log("resultado que devuelve la ruta: ", salesHome);
+  } catch (error) {
+    console.error("Error al obtener los productos:", error);
+    res.status(500).json({ error: "Error al obtener los productos" });
+  }
+});
+
 
 // Manejo de errores 404
 app.use((req, res, next) => {
