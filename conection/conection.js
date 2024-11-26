@@ -1,7 +1,7 @@
 //configura y exporta un pool de conexiones a una base de datos PostgreSQL, 
 //utilizando variables de entorno para la configuración y biblioteca pg
 
-const { Pool } = require('pg'); //importa la clase Pool de la biblioteca pg
+/* const { Pool } = require('pg'); //importa la clase Pool de la biblioteca pg
 require ('dotenv').config();
 
 //const { HOST, DATABASE, USER, PASSWORD, PORT } = process.env;  //extrae las variables de entorno necesarias para la conexión a la base de datos del archivo .env
@@ -16,4 +16,17 @@ const pool = new Pool({   //configuración de la conexión, se crea una instanci
 });
 
 
-module.exports = { pool };
+
+module.exports = { pool }; */
+
+const { Pool } = require('pg');
+
+// Usa la URL de conexión a la base de datos de Render
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // Asegúrate de que esta variable esté en tu archivo .env
+  ssl: {
+    rejectUnauthorized: false // Esto es necesario para conexiones a Render
+  }
+});
+
+module.exports = pool;
