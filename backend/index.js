@@ -43,7 +43,8 @@ const {
   obtenerTienda,
   cambiarDatosPersonales,
   obtenerCategoriasHome,
-  obtenerSalesHome
+  obtenerSalesHome,
+  insertarProductosSale
 } = require("./consultas/consultas.js");
 const {
   registrarUsuario,
@@ -196,12 +197,18 @@ app.post("/crearpublicacion", verifyToken, async (req, res) => {
       id_categoria
     );
 
+     // Insertar el producto en tabla sale como inactivo por defecto
+     const nuevoProductoSale = await insertarProductosSale(
+      nuevoProducto.id_producto
+    );
+
     res.status(201).json({
       mensaje: "Publicación creada exitosamente",
       producto: nuevoProducto,
       categoria: nuevoProductoCategoria,
       imagen: nuevaImagen,
       publicacion: nuevaPublicacion,
+      sale: nuevoProductoSale
     });
   } catch (error) {
     console.error("Error al crear la publicación:", error);

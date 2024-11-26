@@ -69,6 +69,16 @@ const insertarProductosCategorias = async (id_producto, id_categoria) => {
 };
 
 //-------------------------------------------------------------------------------------------
+// FUNCIÓN PARA INSERTAR UN PRODUCTO A TABLA SALE 
+
+const insertarProductosSale = async (id_producto) => {
+  const consulta = `INSERT INTO productos_sale (id_producto, descuento, estado) VALUES ($1, 0, DEFAULT) RETURNING *;`;
+  const values = [id_producto];
+  const result = await pool.query(consulta, values);
+  return result.rows[0]; 
+};
+
+//-------------------------------------------------------------------------------------------
 // FUNCIÓN PARA TRAER PRODUCTO
 const getProductos = async () => {
   const { rows: productos } = await pool.query("SELECT * FROM productos");
@@ -299,7 +309,8 @@ module.exports = {
   obtenerTienda,
   cambiarDatosPersonales,
   obtenerCategoriasHome,
-  obtenerSalesHome
+  obtenerSalesHome,
+  insertarProductosSale
 };
 
 //-------------------------------------------------------------------------------------------
