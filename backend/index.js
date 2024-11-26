@@ -374,5 +374,3 @@ app.use((req, res, next) => {
   });
 });
 
-// rehacer la bbdd con los numeros de productos correlativos en todas las tablas correspondientes
-// ojo en la bbdd al crear la tabla hay unos check con "Inactivo" "Activo" en mayusuculas y otros con minusculas
