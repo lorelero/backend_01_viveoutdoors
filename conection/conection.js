@@ -17,6 +17,8 @@ module.exports = { pool };
  */
 
 //external url render
+require('dotenv').config(); 
+
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -25,6 +27,7 @@ const pool = new Pool({
   user: process.env.USER,
   password: process.env.PASSWORD,
   port: process.env.PORT,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false // Esto es necesario para conexiones a Render
   },
