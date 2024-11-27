@@ -69,7 +69,7 @@ const PORT = process.env.PORT_SERVER || 3000;
 
 // Iniciamos el servidor y mostramos un mensaje para confirmar que está funcionando
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en https://viveoutdoors.onrender.com`);
 });
 
 // const { PORT, SECRET_JWT_KEY } = process.env;
