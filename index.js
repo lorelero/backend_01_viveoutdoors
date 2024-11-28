@@ -65,12 +65,14 @@ require("dotenv").config(); // Cargamos las variables de entorno desde el archiv
 const app = express();
 
 // Configuramos el puerto en el que escuchará nuestra aplicación
-const PORT = process.env.PORT || 5432;
+const PORT = process.env.PORT || 3000;
 
 // Iniciamos el servidor y mostramos un mensaje para confirmar que está funcionando
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en https://viveoutdoors.onrender.com`);
+  console.log(`Servidor corriendo en ${process.env.NODE_ENV === 'production' ? 
+    'https://viveoutdoors.onrender.com' : `http://localhost:${PORT}`}`);
 });
+
 
 // const { PORT, SECRET_JWT_KEY } = process.env;
 
