@@ -22,11 +22,15 @@
 
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors");
+const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
+
+app.use(cors({
+  origin: 'https://viveoutdoors.onrender.com', // Cambia según sea necesario
+}));
 
 //importamos funciones necesarias para las rutas
 const {
