@@ -28,9 +28,7 @@ const helmet = require("helmet");
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
 
-app.use(cors({
-  origin: 'https://viveoutdoors.onrender.com', // Cambia según sea necesario
-}));
+
 
 //importamos funciones necesarias para las rutas
 const {
@@ -67,9 +65,11 @@ require("dotenv").config(); // Cargamos las variables de entorno desde el archiv
 
 // Creamos una instancia de Express
 const app = express();
-
-// Configuramos el puerto en el que escuchará nuestra aplicación
 const PORT = process.env.PORT || 3000;
+
+app.use(cors({
+  origin: 'https://viveoutdoors.onrender.com', // Cambia según sea necesario
+}));
 
 // Iniciamos el servidor y mostramos un mensaje para confirmar que está funcionando
 app.listen(PORT, () => {
